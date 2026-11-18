@@ -9,10 +9,10 @@ import { reviewIds, useStore } from './store'
 type Tab = 'fiches' | 'quiz' | 'erreurs' | 'progression'
 
 const TABS: { id: Tab; label: string; Icon: () => JSX.Element }[] = [
-  { id: 'fiches', label: 'Fiches', Icon: IconFiches },
+  { id: 'fiches', label: 'Flashcards', Icon: IconFiches },
   { id: 'quiz', label: 'Quiz', Icon: IconQuiz },
-  { id: 'erreurs', label: 'Mes erreurs', Icon: IconErreurs },
-  { id: 'progression', label: 'Progression', Icon: IconProgress },
+  { id: 'erreurs', label: 'My mistakes', Icon: IconErreurs },
+  { id: 'progression', label: 'Progress', Icon: IconProgress },
 ]
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="brand">
-        <p className="logo">Révision CCA</p>
+        <p className="logo">CCA Revision</p>
         <p className="sub">Cabin4You-Aero · Aviation Indoctrination</p>
       </header>
 
@@ -34,7 +34,7 @@ export default function App() {
         {TABS.map(({ id, label, Icon }) => (
           <button key={id} className={`tab ${tab === id ? 'on' : ''}`} aria-current={tab === id ? 'page' : undefined} onClick={() => setTab(id)}>
             <Icon /><span>{label}</span>
-            {id === 'erreurs' && nErr > 0 && <b className="dot" aria-label={`${nErr} à revoir`}>{nErr}</b>}
+            {id === 'erreurs' && nErr > 0 && <b className="dot" aria-label={`${nErr} to review`}>{nErr}</b>}
           </button>
         ))}
       </nav>
@@ -44,17 +44,17 @@ export default function App() {
           <div className="strip">
             {inProgress && (
               <button className="btn primary" onClick={() => setTab('quiz')}>
-                Reprendre mon quiz <small>{se!.attemptIds.length}/{se!.ids.length}</small>
+                Resume my quiz <small>{se!.attemptIds.length}/{se!.ids.length}</small>
               </button>
             )}
             {nErr > 0 && (
               <button
                 className={`btn ${inProgress ? '' : 'primary'}`}
                 disabled={!!inProgress}
-                title={inProgress ? 'Termine ou abandonne ton quiz en cours d’abord' : undefined}
+                title={inProgress ? 'Finish or abandon your current quiz first' : undefined}
                 onClick={() => { start('erreurs', 'all'); setTab('quiz') }}
               >
-                Refaire mes erreurs <small>{nErr}</small>
+                Redo my mistakes <small>{nErr}</small>
               </button>
             )}
           </div>

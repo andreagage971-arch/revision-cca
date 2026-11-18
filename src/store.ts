@@ -69,10 +69,10 @@ export function statusOf(notionId: string, attempts: Attempt[]): Status {
 }
 
 export const STATUS_LABEL: Record<Status, string> = {
-  none: 'Non travaillée',
-  mastered: 'Maîtrisée',
-  corrected: 'Corrigée',
-  review: 'À revoir',
+  none: 'Not studied',
+  mastered: 'Mastered',
+  corrected: 'Corrected',
+  review: 'To review',
 }
 
 export const lastAttempt = (notionId: string, attempts: Attempt[]) =>
@@ -177,5 +177,5 @@ export function useStore() {
 export const seriesScore = (s: Series, attempts: Attempt[]) =>
   s.attemptIds.reduce((t, id) => t + (attempts.find((a) => a.id === id)?.score ?? 0), 0)
 
-export const fmt = (n: number) => String(n).replace('.', ',')
+export const fmt = (n: number) => String(n)
 export const pts = (n: number) => `${fmt(n)} ${n > 1 ? 'points' : 'point'}`

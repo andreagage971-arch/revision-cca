@@ -26,29 +26,29 @@ export default function Fiches() {
 
   return (
     <section aria-labelledby="t-fiches">
-      <h1 id="t-fiches">Fiches</h1>
+      <h1 id="t-fiches">Flashcards</h1>
       <div className="toolbar">
         <input
           className="field"
           type="search"
-          placeholder="Chercher un mot ou un sigle (APU, drag, galley…)"
+          placeholder="Search a word or acronym (APU, drag, galley…)"
           value={q}
           onChange={(ev) => setQ(ev.target.value)}
-          aria-label="Chercher dans les fiches"
+          aria-label="Search the flashcards"
         />
         <label className="switch">
           <input type="checkbox" checked={hide} onChange={(ev) => { setHide(ev.target.checked); setShown(new Set()) }} />
-          <span>Masquer les définitions (je les retrouve de mémoire)</span>
+          <span>Hide definitions (recall them from memory)</span>
         </label>
-        <div className="chips" role="group" aria-label="Filtrer par thème">
-          <button className={`chip ${theme === 'all' ? 'on' : ''}`} aria-pressed={theme === 'all'} onClick={() => setTheme('all')}>Tout</button>
+        <div className="chips" role="group" aria-label="Filter by theme">
+          <button className={`chip ${theme === 'all' ? 'on' : ''}`} aria-pressed={theme === 'all'} onClick={() => setTheme('all')}>All</button>
           {THEMES.map((t) => (
             <button key={t.id} className={`chip ${theme === t.id ? 'on' : ''}`} aria-pressed={theme === t.id} onClick={() => setTheme(t.id)}>{t.name}</button>
           ))}
         </div>
       </div>
 
-      {list.length === 0 && <p className="empty">Aucune fiche ne correspond à « {q} ». Essaie un sigle ou un autre mot.</p>}
+      {list.length === 0 && <p className="empty">No flashcard matches “{q}”. Try an acronym or another word.</p>}
 
       {THEMES.map((t) => {
         const items = list.filter((x) => x.theme === t.id)
@@ -63,17 +63,17 @@ export default function Fiches() {
                   <li key={x.id} className="row">
                     <div className="row-head">
                       <strong className="term">{x.term}</strong>
-                      {x.flag && <span className="badge warn">À vérifier</span>}
+                      {x.flag && <span className="badge warn">To check</span>}
                     </div>
                     {open ? (
                       <p className="def">{x.def}</p>
                     ) : (
                       <button className="link" onClick={() => toggle(x.id)}>
-                        Afficher la définition <span className="muted">({expectText(x)})</span>
+                        Show definition <span className="muted">({expectText(x)})</span>
                       </button>
                     )}
                     {open && x.flag && <p className="note">{x.flag}</p>}
-                    {open && hide && <button className="link" onClick={() => toggle(x.id)}>Masquer à nouveau</button>}
+                    {open && hide && <button className="link" onClick={() => toggle(x.id)}>Hide again</button>}
                     <p className="source">{x.source}</p>
                   </li>
                 )

@@ -1,9 +1,9 @@
-# Révision CCA
+# CCA Revision
 
-Application de révision du cours CCA d'initiation à l'aviation : fiches, quiz de 8 questions, rattrapage des erreurs et progression (sauvegardée dans le navigateur).
+CCA aviation induction revision app: flashcards, 8-question quizzes, mistake retries and progress tracking (saved in the browser).
 
 ```
 npm install
 npm start      # http://localhost:5175
 ```
-Les données du cours sont dans `src/data.ts`.
+Course data lives in `src/data.ts`.
