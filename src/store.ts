@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { byId, QUIZ_NOTIONS } from './data'
+import { byId, inScope, QUIZ_NOTIONS } from './data'
 import { grade } from './grade'
 
 export type Mode = 'serie' | 'erreurs'
@@ -78,8 +78,8 @@ export const STATUS_LABEL: Record<Status, string> = {
 export const lastAttempt = (notionId: string, attempts: Attempt[]) =>
   attempts.filter((a) => a.notionId === notionId).sort((a, b) => b.ts - a.ts)[0]
 
-export const reviewIds = (attempts: Attempt[]) =>
-  QUIZ_NOTIONS.filter((x) => statusOf(x.id, attempts) === 'review').map((x) => x.id)
+export const reviewIds = (attempts: Attempt[], scope = 'all') =>
+  QUIZ_NOTIONS.filter((x) => inScope(x, scope) && statusOf(x.id, attempts) === 'review').map((x) => x.id)
 
 const shuffle = <T,>(a: T[]) => {
   const r = [...a]
@@ -105,12 +105,12 @@ export function useStore() {
     setState((s) => {
       let ids: string[]
       if (mode === 'erreurs') {
-        const rev = reviewIds(s.attempts)
+        const rev = reviewIds(s.attempts, theme)
         // les plus anciennement ratées d’abord
         rev.sort((a, b) => (lastAttempt(a, s.attempts)?.ts ?? 0) - (lastAttempt(b, s.attempts)?.ts ?? 0))
         ids = shuffle(rev.slice(0, 8))
       } else {
-        const pool = QUIZ_NOTIONS.filter((x) => theme === 'all' || x.theme === theme)
+        const pool = QUIZ_NOTIONS.filter((x) => inScope(x, theme))
         // priorité aux notions jamais travaillées ou à revoir
         const score = (id: string) => ({ none: 0, review: 0, corrected: 1, mastered: 2 })[statusOf(id, s.attempts) === 'none' ? 'none' : statusOf(id, s.attempts)]
         const sorted = shuffle(pool).sort((a, b) => score(a.id) - score(b.id))

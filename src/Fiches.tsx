@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react'
-import { NOTIONS, THEMES, expectText } from './data'
+import { CHAPTERS, expectText, notionsOf, themesOf } from './data'
 import { normAnswer } from './grade'
 
-export default function Fiches() {
+export default function Fiches({ ch }: { ch: number }) {
+  const NOTIONS = notionsOf(ch)
+  const THEMES = themesOf(ch)
   const [q, setQ] = useState('')
   const [theme, setTheme] = useState('all')
   const [hide, setHide] = useState(false)
@@ -15,7 +17,7 @@ export default function Fiches() {
       if (!nq) return true
       return normAnswer(`${x.term} ${x.def} ${x.q}`).includes(nq)
     })
-  }, [q, theme])
+  }, [q, theme, ch])
 
   const toggle = (id: string) =>
     setShown((s) => {
@@ -27,7 +29,10 @@ export default function Fiches() {
   return (
     <section aria-labelledby="t-fiches">
       <h1 id="t-fiches">Flashcards</h1>
-      <div className="toolbar">
+      {NOTIONS.length === 0 && (
+        <p className="empty">{CHAPTERS.find((c) => c.n === ch)!.name} has no flashcards yet. They will appear here as soon as its course is added.</p>
+      )}
+      {NOTIONS.length > 0 && <div className="toolbar">
         <input
           className="field"
           type="search"
@@ -46,9 +51,9 @@ export default function Fiches() {
             <button key={t.id} className={`chip ${theme === t.id ? 'on' : ''}`} aria-pressed={theme === t.id} onClick={() => setTheme(t.id)}>{t.name}</button>
           ))}
         </div>
-      </div>
+      </div>}
 
-      {list.length === 0 && <p className="empty">No flashcard matches “{q}”. Try an acronym or another word.</p>}
+      {NOTIONS.length > 0 && list.length === 0 && <p className="empty">No flashcard matches “{q}”. Try an acronym or another word.</p>}
 
       {THEMES.map((t) => {
         const items = list.filter((x) => x.theme === t.id)

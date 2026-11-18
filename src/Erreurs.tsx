@@ -1,4 +1,4 @@
-import { byId, QUIZ_NOTIONS } from './data'
+import { byId, quizOf } from './data'
 import { lastAttempt, reviewIds, statusOf, type useStore } from './store'
 
 type Store = ReturnType<typeof useStore>
@@ -6,9 +6,10 @@ type Store = ReturnType<typeof useStore>
 const when = (ts: number) =>
   new Date(ts).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
 
-export default function Erreurs({ store, goQuiz }: { store: Store; goQuiz: () => void }) {
+export default function Erreurs({ ch, store, goQuiz }: { ch: number; store: Store; goQuiz: () => void }) {
   const { state, start } = store
-  const review = reviewIds(state.attempts)
+  const QUIZ_NOTIONS = quizOf(ch)
+  const review = reviewIds(state.attempts, `ch:${ch}`)
   const corrected = QUIZ_NOTIONS.filter((x) => statusOf(x.id, state.attempts) === 'corrected')
 
   return (
@@ -17,7 +18,7 @@ export default function Erreurs({ store, goQuiz }: { store: Store; goQuiz: () =>
       <div className="actions">
         <button
           className="btn primary" disabled={review.length === 0}
-          onClick={() => { start('erreurs', 'all'); goQuiz() }}
+          onClick={() => { start('erreurs', `ch:${ch}`); goQuiz() }}
         >
           Redo my mistakes{review.length > 0 ? ` (${Math.min(review.length, 8)}${review.length > 8 ? ` of ${review.length}` : ''})` : ''}
         </button>

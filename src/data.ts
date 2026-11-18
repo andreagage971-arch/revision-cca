@@ -17,13 +17,27 @@ export type Notion = {
   flag?: string
 }
 
-export const THEMES = [
-  { id: 'org', name: 'Organisations' },
-  { id: 'crew', name: 'Crew and health' },
-  { id: 'sig', name: 'Acronyms and alphabet' },
-  { id: 'vol', name: 'Forces of flight and aircraft' },
-  { id: 'cab', name: 'Cabin and doors' },
+export const CHAPTERS = [
+  { n: 1, name: 'Chapter 1', title: 'Aviation Indoctrination' },
+  { n: 2, name: 'Chapter 2', title: 'Passenger Handling' },
 ] as const
+
+export type Theme = { id: string; name: string; ch: number }
+
+export const THEMES: Theme[] = [
+  // ───────── Chapter 1
+  { id: 'org', name: 'Organisations', ch: 1 },
+  { id: 'crew', name: 'Crew and health', ch: 1 },
+  { id: 'sig', name: 'Acronyms and alphabet', ch: 1 },
+  { id: 'vol', name: 'Forces of flight and aircraft', ch: 1 },
+  { id: 'cab', name: 'Cabin and doors', ch: 1 },
+  // ───────── Chapter 2
+  { id: 'c2-steps', name: 'The 21 steps', ch: 2 },
+  { id: 'c2-pre', name: 'Pre-flight (steps 1–4)', ch: 2 },
+  { id: 'c2-in', name: 'In-flight (steps 5–18)', ch: 2 },
+  { id: 'c2-post', name: 'Post-flight (steps 19–21)', ch: 2 },
+  { id: 'c2-book', name: 'Booklet extras', ch: 2 },
+]
 
 const L1 = 'Booklet p.1 · PHOTO-2026-11-18-00-59-23.jpg'
 const L2 = 'Booklet p.2 · PHOTO-2026-11-18-00-59-30.jpg'
@@ -32,6 +46,17 @@ const L4 = 'Booklet p.4 · PHOTO-2026-11-18-00-59-39.jpg'
 const C1 = 'Notebook · PHOTO-2026-11-18-01-01-35.jpg'
 const C2 = 'Notebook · PHOTO-2026-11-18-01-01-45.jpg'
 const C3 = 'Notebook · PHOTO-2026-11-18-01-02-04.jpg'
+
+const N1 = 'Ch.2 notebook · ch2-notebook-1-steps.jpg'
+const N2 = 'Ch.2 notebook · ch2-notebook-2-preflight.jpg'
+const N3 = 'Ch.2 notebook · ch2-notebook-3-security-boarding.jpg'
+const N4 = 'Ch.2 notebook · ch2-notebook-4-steps6-11.jpg'
+const N5 = 'Ch.2 notebook · ch2-notebook-5-steps12-18.jpg'
+const N6 = 'Ch.2 notebook · ch2-notebook-6-postflight.jpg'
+const B1 = 'Ch.2 booklet p.1 · ch2-booklet-p1.jpg'
+const B2 = 'Ch.2 booklet p.2 · ch2-booklet-p2.jpg'
+const B3 = 'Ch.2 booklet p.3 · ch2-booklet-p3.jpg'
+const B4 = 'Ch.2 booklet p.4 · ch2-booklet-p4.jpg'
 
 type In = {
   id: string
@@ -461,10 +486,247 @@ export const NOTIONS: Notion[] = [
     flag: 'Your course names the element (“slide selector / arming lever”) without explaining how it works: not tested.',
     def: 'Arming lever (slide selector): a door lever linked to arming the slide. Its function is not detailed in your booklet or notes.',
     el: [] }),
+  // ═════════ CHAPTER 2 · Passenger handling (handwritten course first, printed booklet as complement)
+
+  // ───────── The 21 steps (overview)
+  n({ id: 'safety-security', theme: 'c2-steps', term: 'Safety vs Security', kind: 'def', src: N1,
+    q: 'What is the difference between safety and security?',
+    def: 'Safety = NOT intentional (accidents, incidents). Security = INTENTIONAL (a deliberate act, e.g. a threat or a suspicious item).',
+    el: [e('Safety = not intentional', 'not intentional*', 'unintentional*', 'accident*', 'non intentional*', 'not deliberate', 'not on purpose'), e('Security = intentional', 'intentional*', 'deliberate*', 'on purpose', 'voluntar*', 'malicious')] }),
+  n({ id: 'steps-groups', theme: 'c2-steps', term: 'The 21 steps: three groups', kind: 'def', src: N1,
+    q: 'The 21 steps are split into three groups of procedures. Name them and give their step numbers.',
+    def: 'Pre-flight procedures = steps 1 to 4 · In-flight procedures = steps 5 to 18 · Post-flight procedures = steps 19 to 21.',
+    el: [e('Pre-flight: steps 1 to 4', 'pre flight', 'preflight', 'before flight'), e('In-flight: steps 5 to 18', 'in flight', 'inflight', 'during flight'), e('Post-flight: steps 19 to 21', 'post flight', 'postflight', 'after flight')] }),
+  n({ id: 'steps-pre', theme: 'c2-steps', term: 'Steps 1 to 4 (pre-flight)', kind: 'def', src: N1,
+    q: 'Give steps 1 to 4, in order.',
+    def: '1. Home preparation · 2. Pre-flight briefing · 3. Pre-flight safety check · 4. Cabin security check.',
+    el: [e('1. Home preparation', 'home'), e('2. Pre-flight briefing', 'briefing'), e('3. Pre-flight safety check', 'safety'), e('4. Cabin security check', 'security')] }),
+  n({ id: 'steps-in-a', theme: 'c2-steps', term: 'Steps 5 to 11 (in-flight, before take-off)', kind: 'def', src: N1,
+    q: 'Give steps 5 to 11, in order.',
+    def: '5. Boarding · 6. Close doors · 7. “Arm the slides” (command) · 8. Demonstration · 9. Final cabin check · 10. Cabin ready · 11. “Take your seats” (command).',
+    min: 6,
+    el: [e('5. Boarding', 'boarding', 'board'), e('6. Close doors', 'close*', 'closing', 'door*'), e('7. Arm the slides', 'arm*'), e('8. Demonstration', 'demo*', 'announcement'), e('9. Final cabin check', 'final', 'check'), e('10. Cabin ready', 'ready'), e('11. Take your seats', 'seat*', 'take your', 'sit')] }),
+  n({ id: 'steps-in-b', theme: 'c2-steps', term: 'Steps 12 to 18 (in-flight, after take-off)', kind: 'def', src: N1,
+    q: 'Give steps 12 to 18, in order.',
+    def: '12. After take-off · 13. Cruise flight · 14. “Prepare for landing” (command) · 15. Final cabin check · 16. Cabin ready · 17. “Take your seats” (command) · 18. After landing.',
+    min: 6,
+    el: [e('12. After take-off', 'take off', 'takeoff', 'take-off'), e('13. Cruise flight', 'cruise*'), e('14. Prepare for landing', 'prepare*'), e('15. Final cabin check', 'final', 'check'), e('16. Cabin ready', 'ready'), e('17. Take your seats', 'seat*', 'sit'), e('18. After landing', 'after landing', 'landed', 'touchdown')] }),
+  n({ id: 'steps-post', theme: 'c2-steps', term: 'Steps 19 to 21 (post-flight)', kind: 'def', src: N1,
+    q: 'Give steps 19 to 21, in order.',
+    def: '19. “Disarm slides” (command) · 20. Doors open · 21. Lost and found check.',
+    el: [e('19. Disarm slides', 'disarm*'), e('20. Doors open', 'open*', 'door*'), e('21. Lost and found check', 'lost', 'found')] }),
+  n({ id: 'main-checks', theme: 'c2-steps', term: 'The 5 main checks', kind: 'def', src: N1,
+    q: 'Which steps are the 5 main checks? Give their numbers (and names if you can).',
+    def: 'Steps 3 / 4 / 9 / 15 / 21: pre-flight safety check (3), cabin security check (4), final cabin check (9), final cabin check (15), lost and found check (21).',
+    el: [e('Step 3 (pre-flight safety check)', '3', 'three'), e('Step 4 (cabin security check)', '4', 'four'), e('Step 9 (final cabin check)', '9', 'nine'), e('Step 15 (final cabin check)', '15', 'fifteen'), e('Step 21 (lost and found check)', '21', 'twenty one', 'twentyone')] }),
+  n({ id: 'commands', theme: 'c2-steps', term: 'The 5 commands', kind: 'def', src: N1,
+    q: 'Which steps are the 5 commands? Give their numbers (and the words if you can).',
+    def: 'Steps 7 / 11 / 14 / 17 / 19: “Cabin crew, arm the slides” (7), “Cabin crew, take your seats” (11), “Cabin crew, prepare for landing” (14), “Cabin crew, take your seats” (17), “Cabin crew, disarm the slides” (19).',
+    el: [e('Step 7 (arm the slides)', '7', 'seven'), e('Step 11 (take your seats)', '11', 'eleven'), e('Step 14 (prepare for landing)', '14', 'fourteen'), e('Step 17 (take your seats)', '17', 'seventeen'), e('Step 19 (disarm the slides)', '19', 'nineteen')] }),
+  n({ id: 'step-number-9', theme: 'c2-steps', term: 'Step 9 and step 15', kind: 'def', src: N1,
+    q: 'What are step 9 and step 15, and what do they have in common?',
+    def: 'Both are the FINAL CABIN CHECK: step 9 before take-off, step 15 before landing. They are two of the 5 main checks.',
+    el: [e('Final cabin check', 'final', 'cabin check'), o('Before take-off / before landing', 'take off', 'takeoff', 'landing')] }),
+  n({ id: 'step-number-10', theme: 'c2-steps', term: 'Step 10 and step 16', kind: 'def', src: N1,
+    q: 'What are step 10 and step 16?',
+    def: 'Both are CABIN READY: the purser informs the pilots that the cabin is ready (step 10 before take-off, step 16 before landing).',
+    el: [e('Cabin ready', 'ready')] }),
+
+  // ───────── Pre-flight procedures (steps 1 to 4)
+  n({ id: 'home-docs', theme: 'c2-pre', term: 'Step 1 · Home preparation: documents', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 1, home preparation: which documents must you take? Give at least 3.',
+    def: 'Passport / ID · Crew ID · CCA (crew licence, Cabin Crew Attestation) · Vaccination (card, if applicable).',
+    min: 3,
+    el: [e('Passport / ID', 'passport', 'id card', 'identity'), e('Crew ID', 'crew id', 'crew card', 'badge'), e('CCA (crew licence)', 'cca', 'licen*', 'attestation'), e('Vaccination', 'vaccin*')] }),
+  n({ id: 'home-luggage', theme: 'c2-pre', term: 'Step 1 · Home preparation: luggage', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 1, home preparation: what are the 3 rules for your crew luggage?',
+    def: 'Pack it yourself · Don’t accept parcels without knowing the content · Never leave it unattended.',
+    el: [e('Pack it yourself', 'pack*', 'yourself', 'myself'), e('Don’t accept parcels (unknown content)', 'parcel*', 'package*', 'accept*', 'content'), e('Never leave it unattended', 'unattended', 'leave', 'alone')] }),
+  n({ id: 'home-fit', theme: 'c2-pre', term: 'Step 1 · Home preparation: fit to fly', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 1, home preparation: what question do you ask yourself to know if you are fit to fly?',
+    def: 'Ask yourself: “Can I save 50 pax today?” (= am I fit to fly?). The printed booklet says: “Do I feel fit to fly? Can I save the day?”',
+    el: [e('Can I save 50 PAX (the day) today?', 'save', 'fit', 'rescue*', '50')] }),
+  n({ id: 'briefing-what', theme: 'c2-pre', term: 'Step 2 · Pre-flight briefing: what?', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 2, pre-flight briefing: what is covered? Give at least 3 topics.',
+    def: 'Introduction · Flight information · Doors positions · Safety awareness.',
+    min: 3,
+    el: [e('Introduction', 'introduc*', 'presentation*'), e('Flight information', 'flight info*', 'information', 'flight details', 'weather'), e('Doors positions', 'door*', 'position*'), e('Safety awareness', 'safety')] }),
+  n({ id: 'briefing-when', theme: 'c2-pre', term: 'Step 2 · Pre-flight briefing: when?', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 2, pre-flight briefing: when does it take place?',
+    def: 'At homebase · at a crew change · at an aircraft change.',
+    el: [e('At homebase', 'homebase', 'home base', 'base'), e('Crew change', 'crew'), e('Aircraft change', 'aircraft', 'plane')] }),
+  n({ id: 'briefing-where', theme: 'c2-pre', term: 'Step 2 · Pre-flight briefing: where?', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 2, pre-flight briefing: where can it take place? Give at least 3 places.',
+    def: 'Crew center · Hotel · Gate · Aircraft.',
+    min: 3,
+    el: [e('Crew center', 'crew cent*', 'center', 'centre', 'briefing room', 'headquarters'), e('Hotel', 'hotel'), e('Gate', 'gate', 'airport'), e('Aircraft', 'aircraft', 'plane', 'onboard')] }),
+  n({ id: 'safety-check', theme: 'c2-pre', term: 'Step 3 · Pre-flight safety check', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Step 3, pre-flight safety check: when is it done and what do you check?',
+    def: 'When: as soon as you get onboard. What: the CONDITION and the LOCATION of the safety equipment. (Booklet: if something is faulty, report it and check the MEL.)',
+    el: [e('When: as soon as you get onboard', 'soon', 'onboard', 'board*', 'arriv*', 'get on'), e('Condition of safety equipment', 'condition*', 'state', 'work*', 'serviceab*'), e('Location of safety equipment', 'location*', 'where', 'place*', 'position*')] }),
+  n({ id: 'equip-fire', theme: 'c2-pre', term: 'Cabin equipment: fire', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Which FIRE equipment can an aircraft carry in the cabin?',
+    def: 'Fire extinguishers + gloves · PBE (Protective Breathing Equipment, smoke hood).',
+    el: [e('Fire extinguishers (+ gloves)', 'extingu*', 'halon'), e('PBE (smoke hood)', 'pbe', 'smoke hood', 'hood', 'breathing')] }),
+  n({ id: 'equip-medical', theme: 'c2-pre', term: 'Cabin equipment: medical', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Which MEDICAL equipment can an aircraft carry in the cabin? Give at least 3.',
+    def: 'First aid kit · Medical kit · Oxygen bottle · AED (defibrillator).',
+    min: 3,
+    el: [e('First aid kit', 'first aid'), e('Medical kit', 'medical'), e('Oxygen bottle', 'oxygen', 'o2'), e('AED (defibrillator)', 'aed', 'defib*')] }),
+  n({ id: 'equip-evac', theme: 'c2-pre', term: 'Cabin equipment: evacuation', kind: 'def', src: `${N2} + ${B1}`,
+    q: 'Which EVACUATION equipment can an aircraft carry in the cabin?',
+    def: 'ELT (Emergency Locator Transmitter) · Flashlight · Megaphone.',
+    el: [e('ELT', 'elt', 'locator', 'beacon'), e('Flashlight', 'flashlight*', 'torch*', 'flash light*'), e('Megaphone', 'megaphone*', 'mega phone*', 'loudspeaker')] }),
+  n({ id: 'equip-other', theme: 'c2-pre', term: 'Cabin equipment: everything else', kind: 'def', src: N2,
+    q: 'Apart from fire, medical and evacuation equipment, what other equipment is carried in the cabin?',
+    def: 'Dangerous goods kit · Restraint kit · Infant SB / LV (infant seat belts and life vests).',
+    el: [e('Dangerous goods kit', 'dangerous', 'goods', 'dg'), e('Restraint kit', 'restrain*'), e('Infant SB / LV', 'infant*', 'baby', 'belt*', 'vest*', 'sb', 'lv')] }),
+  n({ id: 'security-why', theme: 'c2-pre', term: 'Step 4 · Cabin security check: why?', kind: 'def', src: N3,
+    q: 'Step 4: why do we do a cabin security check?',
+    def: 'To prevent suspicious items and unauthorized presence onboard.',
+    el: [e('Suspicious items', 'suspicious', 'item*', 'object*', 'bomb*', 'weapon*'), e('Unauthorized presence (people)', 'unauthori*', 'presence', 'person*', 'people', 'stowaway*', 'intruder*')] }),
+  n({ id: 'security-when', theme: 'c2-pre', term: 'Step 4 · Cabin security check: when?', kind: 'def', src: `${N3} + ${B1}`,
+    q: 'Step 4: when is the cabin security check done?',
+    def: 'After cleaning but before boarding · when the aircraft was in a non-restricted area (hangar) / left unattended · on non-EU flights (mandatory).',
+    min: 2,
+    el: [e('After cleaning, before boarding', 'clean*', 'before boarding', 'catering'), e('Non-restricted area (hangar) / unattended', 'hangar', 'restricted', 'unattended'), e('Non-EU flights', 'eu', 'europe*', 'non eu')] }),
+  n({ id: 'security-where', theme: 'c2-pre', term: 'Step 4 · Cabin security check: where?', kind: 'def', src: `${N3} + ${B1}`,
+    q: 'Step 4: where do you check during the cabin security check? Give at least 5 places.',
+    def: 'Luggage bins · Unsealed containers / trolleys · Galley storage areas · Under seats · Seat pockets · 5% of life vest holders · Coat rooms · Crew rest area (if any) · Lavatories.',
+    min: 5,
+    el: [e('Luggage bins', 'bin*', 'overhead', 'luggage'), e('Unsealed containers / trolleys', 'container*', 'trolley*', 'cart*', 'unsealed'), e('Galley storage areas', 'galley*', 'storage'), e('Under seats', 'under'), e('Seat pockets', 'pocket*'), e('5% of life vest holders', 'vest*', 'holder*', '5', 'pouch*', 'jacket*'), e('Coat rooms', 'coat*', 'closet*'), e('Crew rest area', 'rest'), e('Lavatories', 'lavator*', 'toilet*', 'wc', 'lav')] }),
+
+  // ───────── In-flight procedures (steps 5 to 18)
+  n({ id: 'boarding', theme: 'c2-in', term: 'Step 5 · Boarding', kind: 'def', src: `${N3} + ${B2}`,
+    q: 'Step 5, boarding: what do cabin crew do? Give at least 5 actions.',
+    def: 'Check boarding passes · Occupy the doors (stay close) · Staff ID check · Cockpit door closed · Observe PAX (drunk, aggressive) · Observe PAX luggage · Possibility to deny / offload · Be assertive.',
+    min: 5,
+    el: [e('Check boarding passes', 'boarding pass*', 'pass*', 'ticket*'), e('Occupy the doors (stay close)', 'door station', 'occupy', 'stay close', 'guard', 'stand'), e('Staff ID check', 'staff', 'id'), e('Cockpit door closed', 'cockpit'), e('Observe PAX (drunk, aggressive)', 'drunk', 'aggress*', 'behavio*', 'observe pax', 'observe passenger*', 'passenger*', 'pax'), e('Observe PAX luggage', 'luggage', 'bag*'), e('Deny / offload', 'deny', 'denied', 'offload*', 'off load', 'refuse*'), e('Be assertive', 'assert*', 'firm')] }),
+  n({ id: 'doors-closed', theme: 'c2-in', term: 'Step 6 · Doors closed', kind: 'def', src: N4,
+    q: 'Step 6: when are the doors closed?',
+    def: 'After boarding is completed · upon the ground staff signal.',
+    el: [e('After boarding completed', 'boarding', 'complet*', 'finish*'), e('Upon ground staff signal', 'ground', 'staff', 'signal')] }),
+  n({ id: 'arm-slides', theme: 'c2-in', term: 'Step 7 · “Cabin crew, arm the slides”', kind: 'def', src: `${N4} + ${B2}`,
+    q: 'Step 7, “Cabin crew, arm the slides”: who gives the command and what do you do?',
+    def: 'Upon command of the captain / purser · arm your own door + crosscheck (the opposite door).',
+    el: [e('Command from captain / purser', 'captain', 'purser', 'cpt', 'sccm', 'pilot*'), e('Arm your own door', 'arm*', 'own door', 'door'), e('Crosscheck', 'cross*', 'check')] }),
+  n({ id: 'demo', theme: 'c2-in', term: 'Step 8 · Passenger announcement / demonstration', kind: 'def', src: `${N4} + ${B2}`,
+    q: 'Step 8: what happens during the passenger announcement?',
+    def: 'The purser informs the passengers (welcome speech) + the flight safety demonstration. (Booklet: demonstrate emergency exits, aisle emergency lighting, seatbelt, oxygen mask, safety card.)',
+    el: [e('Purser welcome speech to passengers', 'welcome', 'speech', 'announc*', 'inform*', 'purser'), e('Flight safety demonstration', 'demo*', 'safety')] }),
+  n({ id: 'life-vest-rule', theme: 'c2-in', term: 'Life vest demonstration: when?', kind: 'def', src: `${N4} + ${B2}`,
+    q: 'When must the life vest be demonstrated?',
+    def: 'When take-off or landing is above water, or when the aircraft flies more than 50 nautical miles from land.',
+    el: [e('Take-off or landing above water', 'water', 'sea', 'ocean'), e('More than 50 nautical miles from land', '50', 'fifty', 'nautical', 'nm')] }),
+  n({ id: 'final-check', theme: 'c2-in', term: 'Step 9 · Final cabin check', kind: 'def', src: `${N4} + ${B2}`,
+    q: 'Step 9, final cabin check: what do you check? Give at least 6 items.',
+    def: 'Seatbelts fastened · Seats upright · Tray tables folded · Loose items stowed (overhead bin, under seat, seat pocket) · PEDs off / flight mode · No devices charging · Curtains opened · Window blinds up · Lavatories unoccupied · Distribute infant LV/SB · Self-help exit briefing (when to open, how to open) · Galley secured (trolleys locked, water boilers empty, loose items stowed).',
+    min: 6,
+    el: [e('Seatbelts fastened', 'seatbelt*', 'seat belt*', 'belt*', 'fasten*'), e('Seats upright', 'upright', 'seat back*'), e('Tray tables folded', 'tray*', 'table*'), e('Loose items stowed', 'loose', 'stow*', 'items'), e('PEDs off / flight mode', 'ped*', 'flight mode', 'airplane mode', 'phone*', 'electronic*'), e('No devices charging', 'charg*'), e('Curtains opened', 'curtain*'), e('Window blinds up', 'blind*', 'window*', 'shade*'), e('Lavatories unoccupied', 'lavator*', 'toilet*', 'unoccupied'), e('Distribute infant LV/SB', 'infant*', 'baby', 'lv', 'sb'), e('Self-help exit briefing', 'self help', 'exit*', 'briefing'), e('Galley secured', 'galley*', 'trolley*', 'boiler*')] }),
+  n({ id: 'cabin-ready', theme: 'c2-in', term: 'Steps 10 and 16 · Cabin ready', kind: 'def', src: `${N4} + ${N5} + ${B3}`,
+    q: 'Steps 10 and 16, cabin ready: what happens?',
+    def: 'The purser informs the pilots that the cabin is ready · cabin crew take their seats if they have no safety task.',
+    el: [e('Purser informs the pilots the cabin is ready', 'purser', 'inform*', 'pilot*', 'cockpit', 'ready', 'sccm'), e('Cabin crew sit (if no safety task)', 'seat*', 'sit*', 'safety task*')] }),
+  n({ id: 'take-seats', theme: 'c2-in', term: 'Steps 11 and 17 · “Cabin crew, take your seats”', kind: 'def', src: `${N4} + ${N5} + ${B3}`,
+    q: 'Steps 11 and 17, “Cabin crew, take your seats”: who gives the command and what do you do?',
+    def: 'Command from the pilots to the cabin crew · cabin crew must sit immediately · silent review.',
+    el: [e('Command from the pilots', 'pilot*', 'cockpit', 'flight crew', 'captain'), e('Sit immediately', 'immediat*', 'sit*', 'seat*'), e('Silent review', 'silent', 'review', 'alert')] }),
+  n({ id: 'silent-review', theme: 'c2-in', term: 'Silent review: A.L.E.R.T.', kind: 'def', src: B3,
+    q: 'What does A.L.E.R.T. stand for in the silent review?',
+    def: 'A = Aircraft type · L = Location / door · E = Equipment · R = Responsibilities · T = Threat. A 30-second mental preparation while seated.',
+    el: [e('A = Aircraft type', 'aircraft'), e('L = Location / door', 'location', 'door'), e('E = Equipment', 'equip*'), e('R = Responsibilities', 'responsib*'), e('T = Threat', 'threat*')] }),
+  n({ id: 'seating-position', theme: 'c2-in', term: 'Cabin crew seating position', kind: 'def', src: N5,
+    q: 'What is the cabin crew seating position on a forward-facing seat and on an aft-facing seat?',
+    def: 'Forward-facing seat = head down · Aft-facing seat = head up.',
+    el: [e('Forward facing = head down', 'down'), e('Aft facing = head up', 'up')] }),
+  n({ id: 'after-takeoff', theme: 'c2-in', term: 'Step 12 · After take-off', kind: 'def', src: `${N5} + ${B3}`,
+    q: 'Step 12, after take-off: what happens?',
+    def: 'Cabin crew release signal given by the pilots (chime) · announcement by the purser.',
+    el: [e('Release signal from the pilots', 'release', 'signal', 'chime', 'pilot*'), e('Purser announcement', 'announc*', 'purser')] }),
+  n({ id: 'cruise', theme: 'c2-in', term: 'Step 13 · Cruise', kind: 'def', src: `${N5} + ${B3}`,
+    q: 'Step 13, cruise: what are the cabin crew’s safety tasks? Give at least 4.',
+    def: 'Cockpit check (every 30 min, check their wellbeing) · Lavatories check (every 60 min, smoke detector, waste bin) · Cabin surveillance (observe PAX behaviour, gathering near the cockpit) · Galley safety (lock everything, dry galley floor, proper use of ovens) · Pilots’ meals (never the same meal, never at the same time) · Cockpit door procedures (guarantee safe operation).',
+    min: 4,
+    el: [e('Cockpit check', 'cockpit check', 'pilots wellbeing', 'wellbeing', 'well being', 'check the pilot*'), e('Lavatories check', 'lavator*', 'toilet*', 'smoke detector*'), e('Cabin surveillance', 'surveil*', 'monitor*', 'observ*', 'behavio*'), e('Galley safety', 'galley*', 'oven*', 'floor'), e('Pilots’ meals', 'meal*', 'food'), e('Cockpit door procedures', 'door')] }),
+  n({ id: 'cruise-timing', theme: 'c2-in', term: 'Step 13 · Cockpit and lavatory checks: how often?', kind: 'def', src: N5,
+    q: 'During cruise, how often do you check the cockpit and the lavatories?',
+    def: 'Cockpit: every 30 minutes (check the pilots’ wellbeing). Lavatories: every 60 minutes (smoke detector, waste bin).',
+    el: [e('Cockpit every 30 min', '30', 'thirty', 'half an hour', 'half hour'), e('Lavatories every 60 min', '60', 'sixty', 'hour', '1 hour', 'one hour')] }),
+  n({ id: 'pilot-meals', theme: 'c2-in', term: 'Pilots’ meals rule', kind: 'def', src: N5,
+    q: 'What is the rule for the pilots’ meals?',
+    def: 'Never the same meal, never at the same time (so both pilots cannot be ill at once).',
+    el: [e('Never the same meal', 'same meal', 'different meal*', 'meal*', 'food', 'dish*'), e('Never at the same time', 'time', 'same time', 'different time*', 'once')] }),
+  n({ id: 'prepare-landing', theme: 'c2-in', term: 'Step 14 · “Cabin crew, prepare for landing”', kind: 'def', src: `${N5} + ${B4}`,
+    q: 'Step 14: what is the command and what does it mean for the service?',
+    def: '“CABIN CREW, PREPARE FOR LANDING” (command from the pilots). Stop the service immediately; then the final cabin check (step 15).',
+    el: [e('“Prepare for landing”', 'prepare*', 'landing'), o('Stop the service', 'stop*', 'service')] }),
+  n({ id: 'final-check-2', theme: 'c2-in', term: 'Step 15 · Final cabin check (before landing)', kind: 'def', src: N5,
+    q: 'Step 15, final cabin check before landing: how is it different from step 9?',
+    def: 'Same checks as step 9 (final cabin check), except: the life vests and the self exit (self-help exit briefing).',
+    el: [e('Same as step 9', 'same', '9', 'nine', 'step 9'), e('Except the life vests', 'vest*', 'life', 'lv'), e('Except the self exit', 'self', 'exit*')] }),
+  n({ id: 'after-landing', theme: 'c2-in', term: 'Step 18 · After landing', kind: 'def', src: `${N5} + ${B4}`,
+    q: 'Step 18, after landing: what happens?',
+    def: 'Purser announcement as soon as the aircraft leaves the runway · cabin crew stay seated unless there is a safety risk.',
+    el: [e('Purser announcement when leaving the runway', 'announc*', 'runway', 'purser'), e('Cabin crew stay seated (unless safety risk)', 'seat*', 'stay', 'sit*', 'risk*')] }),
+
+  // ───────── Post-flight procedures (steps 19 to 21)
+  n({ id: 'disarm', theme: 'c2-post', term: 'Step 19 · “Cabin crew, disarm the slides”', kind: 'def', src: `${N6} + ${B4}`,
+    q: 'Step 19, “Cabin crew, disarm the slides”: who gives the command and what do you do?',
+    def: 'Upon command of the captain / purser · disarm your own door + crosscheck. (Booklet: this prevents an inadvertent slide deployment.)',
+    el: [e('Command from captain / purser', 'captain', 'purser', 'cpt', 'sccm', 'pilot*'), e('Disarm your own door', 'disarm*', 'own door', 'door'), e('Crosscheck', 'cross*', 'check')] }),
+  n({ id: 'doors-open', theme: 'c2-post', term: 'Step 20 · Doors open', kind: 'def', src: `${N6} + ${B4}`,
+    q: 'Step 20: how do you open the doors?',
+    def: 'Upon command (signal) of the ground staff · check the slide is disarmed · open the door.',
+    el: [e('Upon ground staff command', 'ground', 'staff', 'signal', 'thumb*'), e('Check slide disarmed', 'disarm*', 'slide'), e('Open the door', 'open*')] }),
+  n({ id: 'lost-found', theme: 'c2-post', term: 'Step 21 · Lost and found check', kind: 'def', src: `${N6} + ${B4}`,
+    q: 'Step 21, lost and found check: what do you do?',
+    def: 'Check the cabin for lost items · put the used equipment (infant LV/SB) back in place.',
+    el: [e('Check the cabin for lost items', 'lost', 'item*', 'belonging*', 'forgot*', 'left'), e('Put used equipment (infant LV/SB) back', 'equipment', 'infant*', 'back', 'place', 'lv', 'sb', 'stow*')] }),
+
+  // ───────── Booklet complements (printed, not in the handwritten course)
+  n({ id: 'seat-infant', theme: 'c2-book', term: 'Seating: infants', kind: 'def', src: B2,
+    q: 'Where may infants NOT be seated?',
+    def: 'Infant on lap: strictly prohibited at exit rows. Infant on its own seat: not at aisle or exit rows.',
+    el: [e('Never at exit rows', 'exit*', 'emergency'), o('Infant on seat: not at the aisle', 'aisle')] }),
+  n({ id: 'seat-exit', theme: 'c2-book', term: 'Seating: emergency exit rows', kind: 'def', src: B2,
+    q: 'Which passengers are never seated at emergency exit rows? Give at least 3.',
+    def: 'Children · pregnant women · PRM (Persons with Reduced Mobility) · infants · PETC (pets in cabin).',
+    min: 3,
+    el: [e('Children', 'child*', 'kid*', 'minor*'), e('Pregnant women', 'pregnan*'), e('PRM (reduced mobility)', 'prm', 'reduced', 'mobility', 'disab*', 'wheelchair*'), e('Infants', 'infant*', 'baby', 'babies'), e('Pets (PETC)', 'pet*', 'petc', 'animal*', 'dog*', 'cat*')] }),
+  n({ id: 'seat-other', theme: 'c2-book', term: 'Seating: UM, PETC, DEPA / DEPU', kind: 'def', src: B2,
+    q: 'Where are a PETC (pet in cabin) and DEPA / DEPU (deportees) seated?',
+    def: 'PETC: not at exit rows and not in the first row. DEPA / DEPU (deportees): at the very back of the aircraft. UM (unaccompanied minor): no restriction unless company policy says otherwise.',
+    el: [e('PETC: not exit rows, not first row', 'first', 'front'), e('DEPA / DEPU: very back', 'back', 'rear', 'aft', 'end')] }),
+  n({ id: 'self-help-briefing', theme: 'c2-book', term: 'Self-help exit briefing: 3 steps', kind: 'def', src: B2,
+    q: 'What are the 3 steps of the self-help exit briefing?',
+    def: '1. Ask the passenger if willing and able to assist · 2. Explain WHEN and HOW to operate the exit · 3. Ask the passenger to repeat the instructions back to you.',
+    el: [e('Ask if willing and able to help', 'willing', 'able', 'agree*', 'ask'), e('Explain when and how to open', 'when', 'how', 'explain*'), e('Ask them to repeat back', 'repeat*', 'back')] }),
+  n({ id: 'slide-types', theme: 'c2-book', term: 'Slide vs slide/raft', kind: 'def', src: B2, quiz: false,
+    def: 'Narrow body aircraft = slide. Wide body aircraft = slide/raft.',
+    el: [] }),
+  n({ id: 'cockpit-access', theme: 'c2-book', term: '6-step cockpit normal access procedure', kind: 'def', src: B3,
+    q: 'Give the 6 steps of the normal cockpit access procedure. Give at least 4.',
+    def: '1. Call cockpit (name and location via interphone) · 2. Secure area (curtain / secondary barrier) · 3. Clear area (no PAX near the cockpit door) · 4. Keypad code · 5. Visual check (pilots use the peephole) · 6. Door unlock (green light, enter).',
+    min: 4,
+    el: [e('Call cockpit (interphone)', 'call*', 'interphone', 'phone'), e('Secure area (curtain)', 'curtain*', 'barrier*', 'secure*'), e('Clear area (no PAX near the door)', 'clear*', 'no pax', 'no passenger*'), e('Keypad code', 'code', 'keypad'), e('Visual check (peephole)', 'visual*', 'peephole', 'camera'), e('Door unlock (green light)', 'unlock*', 'green', 'enter*')] }),
+  n({ id: 'turbulence', theme: 'c2-book', term: 'Turbulence management', kind: 'def', src: B3,
+    q: 'What is the difference between light and moderate / severe turbulence for the cabin crew?',
+    def: 'Light: seatbelt sign ON, PA announcement, check seatbelts, service continues with caution. Moderate / severe: “C/C take seats”, stop service immediately, lock lavatories, sit down immediately anywhere.',
+    el: [e('Light: service continues (with caution)', 'continu*', 'caution', 'carry on'), e('Moderate / severe: stop service and sit immediately', 'stop*', 'sit*', 'seat*')] }),
+  n({ id: 'mel', theme: 'c2-book', term: 'Faulty equipment: MEL', kind: 'def', src: B1, quiz: false,
+    def: 'During the safety pre-flight check, if equipment is faulty: report it and check the MEL (Minimum Equipment List).',
+    el: [] }),
 ]
 
 export const QUIZ_NOTIONS = NOTIONS.filter((x) => x.quiz)
 export const byId = (id: string) => NOTIONS.find((x) => x.id === id)!
+export const chapterOf = (x: Notion) => THEMES.find((t) => t.id === x.theme)?.ch ?? 1
+export const themesOf = (ch: number) => THEMES.filter((t) => t.ch === ch)
+export const notionsOf = (ch: number) => NOTIONS.filter((x) => chapterOf(x) === ch)
+export const quizOf = (ch: number) => QUIZ_NOTIONS.filter((x) => chapterOf(x) === ch)
+// scope of a series: 'all' (everything), 'ch:N' (one chapter) or a theme id
+export const inScope = (x: Notion, scope: string) =>
+  scope === 'all' || (scope.startsWith('ch:') ? chapterOf(x) === Number(scope.slice(3)) : x.theme === scope)
 export const themeName = (id: string) => THEMES.find((t) => t.id === id)?.name ?? id
 
 export const expectText = (x: Notion) => {
