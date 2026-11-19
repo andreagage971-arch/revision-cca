@@ -1,4 +1,4 @@
-import { byId, expectText, QUIZ_NOTIONS, THEMES } from './data'
+import { byId, CHAPTERS, expectText, quizOf, themesOf } from './data'
 import { IconCheck, IconMiss, IconPlay } from './Icons'
 import { fmt, pts, reviewIds, STATUS_LABEL, statusOf, type useStore } from './store'
 
@@ -10,7 +10,11 @@ const GRADES = [
   { v: 0, label: 'Wrong · 0' },
 ]
 
-export default function Quiz({ store, goErrors }: { store: Store; goErrors: () => void }) {
+export default function Quiz({ ch, store, goErrors }: { ch: number; store: Store; goErrors: () => void }) {
+  const scope = `ch:${ch}`
+  const QUIZ_NOTIONS = quizOf(ch)
+  const THEMES = themesOf(ch)
+  const chName = CHAPTERS.find((c) => c.n === ch)!.name
   const { state, start, setDraft, submit, override, next, abandon } = store
   const se = state.session
 
@@ -19,10 +23,13 @@ export default function Quiz({ store, goErrors }: { store: Store; goErrors: () =
       <section aria-labelledby="t-quiz">
         <h1 id="t-quiz">Quiz</h1>
         <p className="lead">A series = 8 open questions, one definition at a time. Answer in your own words: rewordings are accepted.</p>
+        {QUIZ_NOTIONS.length === 0 ? (
+          <p className="empty">{chName} has no quiz questions yet. They will appear here as soon as its course is added.</p>
+        ) : (
         <ul className="rows pick">
           <li>
-            <button className="pick-btn" onClick={() => start('serie', 'all')}>
-              <span><strong>Whole course</strong><small>{QUIZ_NOTIONS.length} testable terms</small></span><IconPlay />
+            <button className="pick-btn" onClick={() => start('serie', scope)}>
+              <span><strong>Whole {chName.toLowerCase()}</strong><small>{QUIZ_NOTIONS.length} testable terms</small></span><IconPlay />
             </button>
           </li>
           {THEMES.map((t) => (
@@ -33,8 +40,9 @@ export default function Quiz({ store, goErrors }: { store: Store; goErrors: () =
             </li>
           ))}
         </ul>
-        {reviewIds(state.attempts).length > 0 && (
-          <p className="hint">You have {reviewIds(state.attempts).length} term(s) to review. <button className="link" onClick={goErrors}>See my mistakes</button></p>
+        )}
+        {reviewIds(state.attempts, scope).length > 0 && (
+          <p className="hint">You have {reviewIds(state.attempts, scope).length} term(s) to review. <button className="link" onClick={goErrors}>See my mistakes</button></p>
         )}
       </section>
     )
@@ -83,8 +91,8 @@ export default function Quiz({ store, goErrors }: { store: Store; goErrors: () =
           </div>
         )}
         <div className="actions">
-          {reviewIds(state.attempts).length > 0 && (
-            <button className="btn primary" onClick={() => { abandon(); start('erreurs', 'all') }}>Redo my mistakes</button>
+          {reviewIds(state.attempts, scope).length > 0 && (
+            <button className="btn primary" onClick={() => { abandon(); start('erreurs', scope) }}>Redo my mistakes</button>
           )}
           <button className="btn" onClick={abandon}>New series</button>
         </div>

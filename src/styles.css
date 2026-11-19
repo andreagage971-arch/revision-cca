@@ -192,3 +192,12 @@ p { margin: 0 0 8px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* Sélecteur de chapitre */
+.chapters { display: flex; gap: 6px; margin-top: 10px; }
+.chapter {
+  border: 1px solid rgb(255 255 255 / .25); background: transparent; color: #c6d3f2;
+  font-size: 0.85rem; font-weight: 650; padding: 6px 14px; border-radius: 99px; min-height: 36px;
+}
+.chapter:hover { background: rgb(255 255 255 / .08); }
+.chapter.on { background: #fff; color: var(--night); border-color: #fff; }

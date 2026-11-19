@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { CHAPTERS } from './data'
 import Erreurs from './Erreurs'
 import Fiches from './Fiches'
 import { IconErreurs, IconFiches, IconProgress, IconQuiz } from './Icons'
@@ -15,19 +16,34 @@ const TABS: { id: Tab; label: string; Icon: () => JSX.Element }[] = [
   { id: 'progression', label: 'Progress', Icon: IconProgress },
 ]
 
+const CH_KEY = 'cca-revision-chapter'
+const loadCh = () => {
+  try { const n = Number(localStorage.getItem(CH_KEY)); return CHAPTERS.some((c) => c.n === n) ? n : 1 } catch { return 1 }
+}
+
 export default function App() {
   const store = useStore()
+  const [ch, setCh] = useState<number>(loadCh)
+  useEffect(() => { try { localStorage.setItem(CH_KEY, String(ch)) } catch { /* pas de stockage */ } }, [ch])
   const [tab, setTab] = useState<Tab>(() => (store.state.session && !store.state.session.done ? 'quiz' : 'fiches'))
   const { state, start } = store
   const se = state.session
   const inProgress = se && !se.done
-  const nErr = reviewIds(state.attempts).length
+  const nErr = reviewIds(state.attempts, `ch:${ch}`).length
+  const chap = CHAPTERS.find((c) => c.n === ch)!
 
   return (
     <div className="app">
       <header className="brand">
         <p className="logo">CCA Revision</p>
-        <p className="sub">Cabin4You-Aero · Aviation Indoctrination</p>
+        <p className="sub">Cabin4You-Aero · {chap.title}</p>
+        <div className="chapters" role="group" aria-label="Chapter">
+          {CHAPTERS.map((c) => (
+            <button key={c.n} className={`chapter ${ch === c.n ? 'on' : ''}`} aria-pressed={ch === c.n} onClick={() => setCh(c.n)}>
+              {c.name}
+            </button>
+          ))}
+        </div>
       </header>
 
       <nav className="tabs" aria-label="Sections">
@@ -52,17 +68,17 @@ export default function App() {
                 className={`btn ${inProgress ? '' : 'primary'}`}
                 disabled={!!inProgress}
                 title={inProgress ? 'Finish or abandon your current quiz first' : undefined}
-                onClick={() => { start('erreurs', 'all'); setTab('quiz') }}
+                onClick={() => { start('erreurs', `ch:${ch}`); setTab('quiz') }}
               >
                 Redo my mistakes <small>{nErr}</small>
               </button>
             )}
           </div>
         )}
-        {tab === 'fiches' && <Fiches />}
-        {tab === 'quiz' && <Quiz store={store} goErrors={() => setTab('erreurs')} />}
-        {tab === 'erreurs' && <Erreurs store={store} goQuiz={() => setTab('quiz')} />}
-        {tab === 'progression' && <Progression store={store} />}
+        {tab === 'fiches' && <Fiches key={ch} ch={ch} />}
+        {tab === 'quiz' && <Quiz ch={ch} store={store} goErrors={() => setTab('erreurs')} />}
+        {tab === 'erreurs' && <Erreurs ch={ch} store={store} goQuiz={() => setTab('quiz')} />}
+        {tab === 'progression' && <Progression ch={ch} store={store} />}
       </main>
     </div>
   )
