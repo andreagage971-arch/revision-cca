@@ -44,6 +44,7 @@ export const THEMES: Theme[] = [
   { id: 'c3-decomp', name: 'Decompression', ch: 3 },
   { id: 'c3-land', name: 'Prepared emergency landing', ch: 3 },
   { id: 'c3-evac', name: 'Evacuation', ch: 3 },
+  { id: 'c3-book', name: 'Booklet extras', ch: 3 },
 ]
 
 const L1 = 'Booklet p.1 · PHOTO-2026-11-18-00-59-23.jpg'
@@ -73,6 +74,10 @@ const S5 = 'Ch.3 notebook · ch3-notebook-5.jpg'
 const S6 = 'Ch.3 notebook · ch3-notebook-6.jpg'
 const S7 = 'Ch.3 notebook · ch3-notebook-7.jpg'
 const S8 = 'Ch.3 notebook · ch3-notebook-8.jpg'
+
+const T1 = 'Ch.3 booklet p.1 · ch3-booklet-p1.jpg'
+const T2 = 'Ch.3 booklet p.2 · ch3-booklet-p2.jpg'
+const T3 = 'Ch.3 booklet p.3 · ch3-booklet-p3.jpg'
 
 type In = {
   id: string
@@ -924,9 +929,9 @@ export const NOTIONS: Notion[] = [
     q: 'What are the 3 Ws the captain gives to the purser before a prepared emergency landing?',
     def: 'WHAT (what is the emergency) · WHEN (how much time is left) · WHERE (where will we land: land or water).',
     el: [e('What', 'what'), e('When', 'when'), e('Where', 'where')] }),
-  n({ id: 'nits', theme: 'c3-land', term: 'NITS', kind: 'def', src: S6,
+  n({ id: 'nits', theme: 'c3-land', term: 'NITS', kind: 'def', src: `${S6} + ${T2}`,
     q: 'What does NITS stand for (the alternative to the 3 Ws)?',
-    def: 'N = Nature (of the emergency) · I = Intention (of the captain) · T = Time (available) · S = Specific instructions.',
+    def: 'N = Nature of the emergency (engine loss, fire, gear failure) · I = Intentions of the flight crew (emergency landing, ditching, diversion) · T = Time available until touchdown / impact · S = Specific instructions (evacuation signals, seating adjustments).',
     el: [e('Nature', 'nature*'), e('Intention', 'intention*'), e('Time', 'time'), e('Specific instructions', 'specific*', 'special*', 'instruction*')] }),
   n({ id: 'prep-checklist', theme: 'c3-land', term: '“CC, use your preparation checklist”', kind: 'def', src: S6,
     q: '“CC, use your preparation checklist”: what do you do with infants, assisting PAX and PAX seating?',
@@ -987,6 +992,55 @@ export const NOTIONS: Notion[] = [
     q: 'What is the difference between evacuation command n°1 and command n°2?',
     def: 'Command n°1 = TO your door (gets the PAX moving to the exit). Command n°2 = AT your door (once the door is open and the slide inflated).',
     el: [e('N°1: to your door', 'to your door', 'to the door', 'toward*', 'go to'), e('N°2: at your door', 'at your door', 'at the door', 'at door')] }),
+
+  // ───────── Chapter 3 booklet extras (printed "Survival Techniques" workbook, complement only)
+  n({ id: 'c3-incident-accident', theme: 'c3-book', term: 'Incident vs accident', kind: 'def', src: T1,
+    q: 'What is the difference between an incident (premeditated) and an accident (unpremeditated)?',
+    def: 'Incident (premeditated): minor to moderate threat, enough time to prepare the cabin, brief PAX and coordinate with the flight crew (e.g. engine failure in flight). Accident (unpremeditated): severe / critical threat, no warning or time to prepare, mostly during critical phases (take-off or landing).',
+    el: [e('Incident: time to prepare', 'time', 'prepare*', 'premeditated', 'plan*'), e('Accident: no warning / no time', 'no time', 'no warning', 'sudden*', 'unpremeditated', 'unexpected')] }),
+  n({ id: 'c3-narrow-wide', theme: 'c3-book', term: 'Narrow-body vs wide-body: evacuation means', kind: 'def', src: T1,
+    q: 'Evacuation means: what is used on a narrow-body aircraft, and on a wide-body aircraft?',
+    def: 'Narrow-body: single or dual-lane slides / slide rafts (on water, slides are used as flotation devices). Wide-body: multi-lane slide rafts or dedicated life rafts (full raft deployment on water).',
+    el: [e('Narrow-body: slides / slide rafts', 'slide*', 'single', 'dual'), e('Wide-body: multi-lane slide rafts / life rafts', 'raft*', 'multi*')] }),
+  n({ id: 'c3-unprepared-landing', theme: 'c3-book', term: 'Unpremeditated emergency landing', kind: 'def', src: T2,
+    q: 'Unpremeditated emergency landing: what is the flight crew command and what do cabin crew do?',
+    def: 'The flight crew immediately commands “BRACE FOR IMPACT!”. Cabin crew adopt the brace position and shout “BRACE!” to the PAX until the aircraft stops.',
+    el: [e('Command: “Brace for impact”', 'brace*', 'impact'), e('Shout “brace” until the aircraft stops', 'shout*', 'stop*', 'until')] }),
+  n({ id: 'c3-abp', theme: 'c3-book', term: 'ABP', kind: 'full', src: T2,
+    def: 'Able-Bodied Passengers: passengers chosen and instructed to help the crew during an emergency (instructed during the PA announcement of a prepared landing).',
+    el: [e('Able-Bodied Passengers', 'able bodied', 'able bodied passenger*', 'able', 'bodied')] }),
+  n({ id: 'c3-seats-actions', theme: 'c3-book', term: 'Emergency “C/C take your seats”: crew actions', kind: 'def', src: T2,
+    q: 'Prepared emergency landing, final approach “C/C take your seats”: what do cabin crew do? Give at least 3.',
+    def: 'Sit at the jumpseat · harness locked · torch (flashlight) ready · ALERT (silent review).',
+    min: 3,
+    el: [e('Sit at the jumpseat', 'jumpseat*', 'jump seat*', 'sit*', 'seat*'), e('Harness locked', 'harness*', 'lock*'), e('Torch ready', 'torch*', 'flashlight*'), e('ALERT / silent review', 'alert', 'silent', 'review')] }),
+  n({ id: 'c3-cmd-guide', theme: 'c3-book', term: 'Booklet commands guide', kind: 'def', src: T3, quiz: false,
+    flag: 'The booklet table differs from your notes for water evacuations. Learn the commands from your notes (Evacuation theme): they are the reference.',
+    def: 'Booklet: Land → at seat row “Open seat belt! Evacuate!”, at door “Jump and slide!”. Water → at seat row “Open seat belt! Put on life vest!”, at door “Inflate life vest! Jump!” or “Inflate life vest! Get into the raft!”. Fire outside → “Fire outside! Go that way!”.',
+    el: [] }),
+  n({ id: 'c3-land-survival', theme: 'c3-book', term: 'Land survival protocol', kind: 'def', src: T3,
+    q: 'After an evacuation on land, what is the survival protocol? Give at least 3 steps.',
+    def: '1. Activate the ELT · 2. Assemble PAX and crew upwind at a safe distance · 3. Evaluate injuries and give first aid · 4. Build a shelter using aircraft structures · 5. Use signal flares only when rescuers are in sight.',
+    min: 3,
+    el: [e('Activate the ELT', 'elt', 'locator', 'beacon'), e('Assemble upwind at a safe distance', 'upwind', 'assembl*', 'gather*', 'distance', 'away'), e('Injuries / first aid', 'injur*', 'first aid', 'aid'), e('Build a shelter', 'shelter*'), e('Flares only when rescuers in sight', 'flare*', 'signal*', 'rescue*')] }),
+  n({ id: 'c3-water-survival', theme: 'c3-book', term: 'Water survival protocol (ditching)', kind: 'def', src: T3,
+    q: 'After a ditching, what is the water survival protocol? Give at least 3 steps.',
+    def: '1. Activate the ELT on raft entry · 2. Cut the mooring line to free the raft from the aircraft · 3. Deploy the sea anchor to stabilise the raft · 4. Do NOT swim: adopt the HUDDLE position · 5. Distribute the survival kit (water, signals).',
+    min: 3,
+    el: [e('Activate the ELT', 'elt', 'locator', 'beacon'), e('Cut the mooring line', 'mooring', 'cut*', 'line', 'rope'), e('Deploy the sea anchor', 'anchor*'), e('Do not swim: huddle position', 'huddle', 'swim*'), e('Distribute the survival kit', 'kit*', 'survival', 'water', 'distribut*')] }),
+  n({ id: 'c3-huddle', theme: 'c3-book', term: 'In the water: swim or huddle?', kind: 'def', src: T3,
+    q: 'After a ditching, should survivors in the water swim? What position do they adopt?',
+    def: 'Do NOT swim: adopt the HUDDLE position (stay grouped to keep warm).',
+    el: [e('Huddle position', 'huddle*', 'group*', 'together')] }),
+  n({ id: 'c3-decomp-types', theme: 'c3-book', term: 'Explosive vs slow decompression', kind: 'def', src: T3,
+    q: 'How do you recognise an explosive decompression and a slow decompression?',
+    def: 'Explosive: loud noise, dense fog, severe cold, oxygen masks drop. Slow: subtle pressure drop, ear popping, fatigue, gradual loss of alertness.',
+    el: [e('Explosive: noise, fog, cold, masks drop', 'noise', 'fog', 'cold', 'mask*', 'loud'), e('Slow: ear popping, fatigue, loss of alertness', 'ear*', 'popping', 'fatigue', 'tired*', 'alert*', 'subtle', 'gradual*')] }),
+  n({ id: 'c3-decomp-crew', theme: 'c3-book', term: 'Decompression: crew action steps', kind: 'def', src: T3,
+    q: 'Decompression: what are the cabin crew action steps (booklet)? Give at least 3.',
+    def: '1. Put on the oxygen mask demonstratively · 2. Sit down immediately ANYWHERE · 3. The emergency descent will follow · 4. When levelled off, check the crew and give portable O2.',
+    min: 3,
+    el: [e('Put on the mask (demonstratively)', 'mask*', 'oxygen'), e('Sit down immediately anywhere', 'sit*', 'anywhere'), e('Emergency descent', 'descent', 'descend*'), e('When levelled: check crew, portable O2', 'level*', 'portable', 'o2', 'check*')] }),
 ]
 
 export const QUIZ_NOTIONS = NOTIONS.filter((x) => x.quiz)
