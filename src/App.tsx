@@ -18,7 +18,7 @@ const TABS: { id: Tab; label: string; Icon: () => JSX.Element }[] = [
 
 const CH_KEY = 'cca-revision-chapter'
 const loadCh = () => {
-  try { return Number(localStorage.getItem(CH_KEY)) === 2 ? 2 : 1 } catch { return 1 }
+  try { const n = Number(localStorage.getItem(CH_KEY)); return CHAPTERS.some((c) => c.n === n) ? n : 1 } catch { return 1 }
 }
 
 export default function App() {
